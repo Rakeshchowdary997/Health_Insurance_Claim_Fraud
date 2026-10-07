@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Model Analytics | HealthGuard AI</title>
+<link rel="stylesheet" href="/static/modern.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#061321;color:#f4f8fc;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+a{text-decoration:none;color:inherit}
+.nav{height:74px;padding:0 42px;background:#06111e;border-bottom:1px solid #1b344b;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.brand{display:flex;align-items:center;gap:12px}.mark{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#2878ef,#28b7ee);display:grid;place-items:center;font-size:25px;font-weight:800}.name{font-weight:800}.sub{font-size:10px;color:#718da7;letter-spacing:.08em;font-weight:700;margin-top:3px}
+.links{display:flex;gap:6px;align-items:center}.links a{padding:11px 13px;border-radius:11px;color:#8ca6bd;font-size:13px;font-weight:750}.links a:hover,.links .active{background:#122438;color:#fff}.links .download{background:linear-gradient(135deg,#2879ef,#27b7e9);color:#fff}
+main{max-width:1240px;margin:auto;padding:52px 34px 70px}
+.eyebrow{display:inline-block;border:1px solid #185277;background:#092238;border-radius:999px;padding:8px 13px;color:#38baf1;font-size:11px;font-weight:800;letter-spacing:.08em}
+.hero{display:flex;justify-content:space-between;align-items:end;gap:30px;margin:22px 0 34px}.hero h1{font-size:49px;line-height:1.03;letter-spacing:-2px;margin:0}.hero h1 span{color:#39baf2}.hero p{color:#88a5bf;line-height:1.7;max-width:730px}
+.status{min-width:220px;border:1px solid #1b344b;background:#0b1d2d;border-radius:18px;padding:18px 20px}.status small{display:block;color:#7190aa;text-transform:uppercase;letter-spacing:.08em;font-size:10px;font-weight:800}.status strong{display:block;margin-top:7px;font-size:18px}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#48d7b0;margin-right:7px}
+.grid{display:grid;grid-template-columns:1fr 300px;gap:22px}
+.card{background:#091a2a;border:1px solid #1b344b;border-radius:22px;overflow:hidden}.card-head{padding:24px 27px;border-bottom:1px solid #1b344b}.card-head h2{margin:0;font-size:19px}.card-head p{margin:6px 0 0;color:#6f8da8;font-size:12px}
+.chart-area{padding:28px 28px 24px}.chart{height:390px;display:flex;align-items:flex-end;gap:30px;padding:0 24px 0;border-bottom:1px solid #28445a;position:relative}
+.chart:before{content:"";position:absolute;left:24px;right:24px;top:15%;border-top:1px dashed #18364d;box-shadow:0 82px 0 #18364d,0 164px 0 #18364d,0 246px 0 #18364d}
+.col{height:100%;flex:1;display:flex;align-items:center;justify-content:flex-end;flex-direction:column;gap:9px;position:relative;z-index:1}.value{font-weight:850;font-size:14px}.bar{width:min(120px,75%);height:var(--height);min-height:8px;border-radius:12px 12px 3px 3px;background:linear-gradient(180deg,#38c0ef,#2878ef);box-shadow:0 8px 25px rgba(40,130,240,.14)}.label{color:#7895ad;font-size:12px;text-align:center;line-height:1.3;max-width:150px}
+.side{display:flex;flex-direction:column;gap:14px}.side-card{background:#091a2a;border:1px solid #1b344b;border-radius:18px;padding:20px}.side-card h3{margin:0;font-size:15px}.side-card p{color:#6f8da8;font-size:12px;line-height:1.6}.side a{display:block;margin-top:10px;padding:12px;border:1px solid #1b4058;background:#0b2235;border-radius:11px;color:#80a2bb;font-size:12px;font-weight:700}.side a:hover{background:#102c43;color:#fff}
+.model-list{margin-top:18px}.model{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #183149;font-size:12px}.model:last-child{border:0}.model span:last-child{font-weight:800;color:#61c8ed}
+.empty{padding:70px;text-align:center;color:#718da7}
+.footer{margin-top:42px;padding-top:22px;border-top:1px solid #1b344b;color:#63809a;font-size:12px}
+.chart-switch{height:390px;position:relative}.chart-switch canvas{width:100%!important;height:100%!important}
+.tools{display:flex;gap:10px;margin:0 0 20px;flex-wrap:wrap}.tool{padding:10px 14px;border:1px solid #1b4058;background:#0b2235;border-radius:11px;color:#80a2bb;font-size:12px;font-weight:700}.tool:hover,.tool.active{background:#1769a3;color:#fff;border-color:#28b7ee}
+@media(max-width:900px){.nav{padding:12px;flex-direction:column;height:auto;align-items:flex-start}.links{width:100%;overflow:auto}.grid{grid-template-columns:1fr}.hero{display:block}.status{margin-top:20px}.chart{gap:12px;padding:0 8px}.bar{width:70%}}
+</style>
+</head>
+<body>
+<nav class="nav">
+<a class="brand" href="{% url 'View_Remote_Users' %}"><div class="mark">+</div><div><div class="name">HealthGuard</div><div class="sub">PROVIDER INTELLIGENCE</div></div></a>
+<div class="links">
+<a href="{% url 'View_Remote_Users' %}">Remote Users</a>
+<a href="{% url 'View_Predicted_Health_Insurance_Claim_Fraud_Type' %}">Predictions</a>
+<a href="{% url 'View_Predicted_Health_Insurance_Claim_Fraud_Type_Ratio' %}">Fraud Ratio</a>
+<a href="{% url 'train_model' %}">Model Accuracy</a>
+<a class="active" href="{% url 'charts1' 'bar' %}">Analytics</a>
+<a class="download" href="{% url 'Download_Predicted_DataSets' %}">Download Data ↓</a>
+</div>
+</nav>
+
+<main>
+<span class="eyebrow">● MODEL ANALYTICS</span>
+<section class="hero">
+<div><h1>Model <span>performance.</span></h1><p>Compare the machine-learning algorithms evaluated by the existing HealthGuard training workflow. The visualization below uses the accuracy values already stored in the application database.</p></div>
+<div class="status"><small>Analytics status</small><strong><span class="dot"></span>Live evaluation data</strong></div>
+</section>
+
+<div class="grid">
+<section class="card">
+<div class="card-head"><h2>Algorithm accuracy benchmark</h2><p>Existing training results · percentage accuracy</p></div>
+<div class="chart-area">
+{% if form %}
+<div class="tools">
+<a class="tool {% if chart_type == 'bar' %}active{% endif %}" href="{% url 'charts1' 'bar' %}">Bar Chart</a>
+<a class="tool {% if chart_type == 'pie' %}active{% endif %}" href="{% url 'charts1' 'pie' %}">Pie Chart</a>
+<a class="tool {% if chart_type == 'line' %}active{% endif %}" href="{% url 'charts1' 'line' %}">Line Chart</a>
+</div>
+<div class="chart-switch"><canvas id="modelChart"></canvas></div>
+{% else %}
+<div class="empty">No model accuracy data is available yet. Run the training workflow first.</div>
+{% endif %}
+</div>
+</section>
+
+<aside class="side">
+<div class="side-card">
+<h3>Model comparison</h3>
+<p>Quick view of the algorithms represented in the current accuracy dataset.</p>
+<div class="model-list">
+{% for item in form %}<div class="model"><span>{{ item.names }}</span><span>{{ item.dcount|floatformat:2 }}%</span></div>{% empty %}<div style="color:#718da7;font-size:12px">No results yet.</div>{% endfor %}
+</div>
+</div>
+<div class="side-card">
+<h3>Explore analytics</h3>
+<a href="{% url 'charts1' 'bar' %}">Bar chart · Current view</a>
+<a href="{% url 'charts1' 'pie' %}">Pie chart →</a>
+<a href="{% url 'charts1' 'line' %}">Line chart →</a>
+<a href="{% url 'train_model' %}">Run model training →</a>
+</div>
+</aside>
+</div>
+<div class="footer">HealthGuard AI · Model analytics workspace · Existing Django workflow preserved</div>
+</main>
+
+{% if form %}
+<script>
+const labels=[{% for item in form %}"{{ item.names|escapejs }}"{% if not forloop.last %},{% endif %}{% endfor %}];
+const values=[{% for item in form %}{{ item.dcount|default:0 }}{% if not forloop.last %},{% endif %}{% endfor %}];
+const selectedType="{{ chart_type|default:'bar'|escapejs }}";
+const chartType=selectedType==="pie"?"pie":selectedType==="line"?"line":"bar";
+
+new Chart(document.getElementById("modelChart"),{
+type:chartType,
+data:{
+labels:labels,
+datasets:[{
+label:"Model Accuracy",
+data:values,
+borderWidth:2,
+borderRadius:chartType==="bar"?10:0,
+tension:.35,
+fill:chartType==="line",
+backgroundColor:chartType==="pie"
+?["#28b7ee","#2879ef","#35d0a5","#7c6cf2","#f59e0b","#ef5b7a"]
+:"rgba(40,183,238,.85)",
+borderColor:"#28b7ee",
+pointBackgroundColor:"#28b7ee",
+pointRadius:chartType==="line"?5:0
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+plugins:{
+legend:{display:chartType==="pie",position:"bottom",labels:{color:"#9bb5ca",padding:20}}
+},
+scales:chartType==="pie"?{}:{
+x:{ticks:{color:"#7895ad"},grid:{color:"rgba(41,68,91,.35)"}},
+y:{beginAtZero:true,max:100,ticks:{color:"#7895ad",callback:function(v){return v+"%"}},grid:{color:"rgba(41,68,91,.35)"}}
+}
+}
+});
+</script>
+{% endif %}
+</body>
+</html>

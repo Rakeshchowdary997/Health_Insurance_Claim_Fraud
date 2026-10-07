@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Service Provider Login</title><link rel="stylesheet" href="/static/modern.css"></head>
+<body>
+<div class="auth-shell"><div class="auth-grid">
+<section class="auth-side">
+<a class="brand" href="{% url 'index' %}"><span class="brand-mark">✚</span><span>Health<span style="color:#7dd3fc">Guard</span><small>PROVIDER INTELLIGENCE</small></span></a>
+<h1>Provider intelligence, without the clutter.</h1>
+<p>Access the existing service-provider analytics area for remote users, predictions, charts and model-related workflows.</p>
+<div class="feature-list">
+<div class="feature">✓ <b>Prediction analytics</b></div>
+<div class="feature">✓ Claim-type ratios & charts</div>
+<div class="feature">✓ Trained dataset workflows</div>
+</div>
+</section>
+<section class="auth-card">
+<h2>Provider sign in</h2><div class="sub">Service Provider · Secure workspace</div>
+<form method="POST" action="{% url 'serviceproviderlogin' %}">
+{% csrf_token %}
+<div class="form-group"><label>USERNAME</label><input type="text" name="username" placeholder="Provider username" required></div>
+<div class="form-group"><label>PASSWORD</label><input type="password" name="password" placeholder="Provider password" required></div>
+<button class="btn btn-primary full" type="submit" name="submit1">Open provider dashboard →</button>
+</form>
+<div class="auth-links"><a href="{% url 'index' %}">← Home</a><a href="{% url 'login' %}">Remote User →</a></div>
+</section>
+</div></div>
+</body></html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create Account</title><link rel="stylesheet" href="/static/modern.css"></head>
+<body>
+<div class="auth-shell"><div class="auth-grid">
+<section class="auth-side">
+<a class="brand" href="{% url 'index' %}"><span class="brand-mark">✚</span><span>Health<span style="color:#7dd3fc">Guard</span><small>AI FRAUD INTELLIGENCE</small></span></a>
+<h1>Create your health analytics account.</h1>
+<p>Register once to access the existing remote-user claim analysis workflow.</p>
+<div class="feature-list">
+<div class="feature">✓ <b>Personal profile</b> connected to your account</div>
+<div class="feature">✓ Claim prediction workflow</div>
+<div class="feature">✓ Clean, responsive interface</div>
+</div>
+</section>
+<section class="auth-card">
+<h2>Create account</h2><div class="sub">Remote User · Registration</div>
+{% if object %}<div class="alert">{{ object }}</div>{% endif %}
+<form method="POST" action="{% url 'Register1' %}">
+{% csrf_token %}
+<div class="form-group"><label>USERNAME</label><input name="username" required></div>
+<div class="form-group"><label>EMAIL</label><input type="email" name="email" required></div>
+<div class="form-group"><label>PASSWORD</label><input type="password" name="password" required></div>
+<div class="form-group"><label>PHONE NUMBER</label><input name="phoneno" required></div>
+<div class="form-group"><label>COUNTRY</label><input name="country" required></div>
+<div class="form-group"><label>STATE</label><input name="state" required></div>
+<div class="form-group"><label>CITY</label><input name="city" required></div>
+<div class="form-group"><label>ADDRESS</label><textarea name="address" rows="2" required></textarea></div>
+<div class="form-group"><label>GENDER</label><select name="gender" required><option value="">Select gender</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+<button class="btn btn-primary full" type="submit">Create account →</button>
+</form>
+<div class="auth-links"><a href="{% url 'login' %}">← Back to login</a></div>
+</section>
+</div></div>
+</body></html>

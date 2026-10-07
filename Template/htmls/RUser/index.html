@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Healthcare Fraud Intelligence</title>
+<link rel="stylesheet" href="/static/modern.css">
+</head>
+<body>
+<header class="nav"><div class="container nav-inner">
+  <a class="brand" href="{% url 'index' %}">
+    <span class="brand-mark">✚</span><span>Health<span style="color:#7dd3fc">Guard</span><small>AI FRAUD INTELLIGENCE</small></span>
+  </a>
+  <nav class="nav-links">
+    <a href="{% url 'index' %}">Home</a>
+    <a href="{% url 'login' %}">Remote User</a>
+    <a href="{% url 'serviceproviderlogin' %}">Service Provider</a>
+  </nav>
+  <a class="btn btn-primary" href="{% url 'login' %}">Get Started →</a>
+</div></header>
+
+<main>
+<section class="hero"><div class="container hero-grid">
+  <div>
+    <span class="eyebrow">● AI-POWERED CLAIM ANALYTICS</span>
+    <h1>Detect suspicious health insurance claims <span>before they become costly.</span></h1>
+    <p>Healthcare Fraud Intelligence helps analyze insurance claim patterns using clinical concepts, claimant information and machine-learning based classification.</p>
+    <div class="actions">
+      <a class="btn btn-primary" href="{% url 'login' %}">Analyze a Claim →</a>
+      <a class="btn btn-ghost" href="{% url 'serviceproviderlogin' %}">Service Provider</a>
+    </div>
+  </div>
+  <div class="hero-card">
+    <div class="shield">🛡</div>
+    <h3>Clinical + Insurance Intelligence</h3>
+    <p>A focused interface for evaluating claim records and presenting fraud-detection results in a clear, modern workflow.</p>
+    <div class="metric-row">
+      <div class="metric"><strong>AI</strong><span>Fraud Analysis</span></div>
+      <div class="metric"><strong>ML</strong><span>Claim Classification</span></div>
+      <div class="metric"><strong>24/7</strong><span>Digital Workflow</span></div>
+      <div class="metric"><strong>Data</strong><span>Claim Insights</span></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="section"><div class="container">
+  <h2 class="section-title">One platform. Three intelligence layers.</h2>
+  <p class="section-sub">Designed around the functionality already present in your Django application.</p>
+  <div class="cards">
+    <article class="card"><div class="icon">🛡</div><h3>Fraud Detection</h3><p>Submit claim information and receive the application's fraud classification result.</p></article>
+    <article class="card"><div class="icon">🧠</div><h3>Machine Learning</h3><p>The existing prediction workflow uses SVM, Logistic Regression, Decision Tree and voting-based classification.</p></article>
+    <article class="card"><div class="icon">📊</div><h3>Provider Analytics</h3><p>Service providers can access prediction views, ratios, charts and trained-data functionality.</p></article>
+  </div>
+</div></section>
+</main>
+<footer class="footer"><div class="container">Healthcare Fraud Intelligence · AI-assisted health insurance claim analysis</div></footer>
+</body></html>

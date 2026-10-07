@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Analytics | HealthGuard AI</title><link rel="stylesheet" href="/static/modern.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body{margin:0;background:#061321;color:#f4f8fc;font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}*{box-sizing:border-box}a{text-decoration:none;color:inherit}
+nav{height:74px;padding:0 42px;background:#06111e;border-bottom:1px solid #1b344b;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;gap:12px;align-items:center}.mark{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#2878ef,#28b7ee);display:grid;place-items:center;font-size:25px;font-weight:800}.bn{font-weight:800}.bs{font-size:10px;color:#718da7;letter-spacing:.08em;font-weight:700}.links{display:flex;gap:6px}.links a{padding:11px 13px;border-radius:11px;color:#8ca6bd;font-size:13px;font-weight:750}.links .active{background:#122438;color:#fff}.links .download{background:linear-gradient(135deg,#2879ef,#27b7e9);color:#fff}
+main{max-width:1180px;margin:auto;padding:55px 34px}.ey{display:inline-block;border:1px solid #185277;background:#092238;border-radius:999px;padding:8px 13px;color:#38baf1;font-size:11px;font-weight:800}.hero{margin:22px 0 38px}.hero h1{font-size:50px;margin:0;letter-spacing:-2px}.hero h1 span{color:#39baf2}.hero p{color:#88a5bf;line-height:1.7;max-width:720px}.card{background:#091a2a;border:1px solid #1b344b;border-radius:22px;padding:27px}.chart{display:flex;align-items:end;gap:45px;height:320px;padding:25px 25px 0;border-bottom:1px solid #29445b}.barcol{height:100%;display:flex;flex:1;flex-direction:column;justify-content:end;align-items:center;gap:10px}.bar{width:min(130px,70%);height:var(--h);min-height:8px;background:linear-gradient(180deg,#28b7ee,#2879ef);border-radius:12px 12px 0 0}.val{font-weight:850}.name{color:#7895ad;font-size:12px;text-align:center}.empty{padding:70px;text-align:center;color:#718da7}.tools{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}.tool{padding:10px 14px;border:1px solid #1b4058;background:#0b2235;border-radius:11px;color:#7fa0ba;font-size:12px}.tool.active{background:#1769a3;color:#fff;border-color:#28b7ee}.footer{margin-top:42px;padding-top:22px;border-top:1px solid #1b344b;color:#63809a;font-size:12px}.chart-switch{height:390px;position:relative;margin-top:22px}.chart-switch canvas{width:100%!important;height:100%!important}.chart-title{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}.chart-title .sub{color:#6f8da8;font-size:12px;margin-top:5px}
+@media(max-width:700px){nav{padding:12px;flex-direction:column;height:auto;align-items:flex-start}.links{overflow:auto;width:100%}.chart{gap:15px}.bar{width:70%}}
+</style></head><body>
+<nav><a class="brand" href="{% url 'View_Remote_Users' %}"><div class="mark">+</div><div><div class="bn">HealthGuard</div><div class="bs">PROVIDER INTELLIGENCE</div></div></a><div class="links"><a href="{% url 'View_Remote_Users' %}">Remote Users</a><a href="{% url 'View_Predicted_Health_Insurance_Claim_Fraud_Type' %}">Predictions</a><a href="{% url 'View_Predicted_Health_Insurance_Claim_Fraud_Type_Ratio' %}">Fraud Ratio</a><a href="{% url 'train_model' %}">Model Accuracy</a><a class="active" href="{% url 'charts' 'bar' %}">Analytics</a><a class="download" href="{% url 'Download_Predicted_DataSets' %}">Download Data ↓</a></div></nav>
+<main><span class="ey">● PROVIDER ANALYTICS</span><section class="hero"><h1>Fraud <span>analytics.</span></h1><p>Visualize the current claim-classification distribution from the HealthGuard provider database.</p></section>
+<section class="card">
+<div class="chart-title"><div><div style="font-size:19px;font-weight:800">Prediction distribution</div><div class="sub">Current fraud vs no-fraud ratio</div></div></div>
+
+{% if form %}
+<div class="tools chart-types">
+<a class="tool {% if chart_type == 'bar' %}active{% endif %}" href="{% url 'charts' 'bar' %}">Bar Chart</a>
+<a class="tool {% if chart_type == 'pie' %}active{% endif %}" href="{% url 'charts' 'pie' %}">Pie Chart</a>
+<a class="tool {% if chart_type == 'line' %}active{% endif %}" href="{% url 'charts' 'line' %}">Line Chart</a>
+</div>
+<div class="chart-switch">
+<canvas id="fraudChart"></canvas>
+</div>
+{% else %}
+<div class="empty">No analytics data available yet. Analyze claims to populate the chart.</div>
+{% endif %}
+
+<div class="tools"><a class="tool" href="{% url 'View_Predicted_Health_Insurance_Claim_Fraud_Type_Ratio' %}">View detailed ratio →</a><a class="tool" href="{% url 'charts1' 'bar' %}">Model accuracy analytics →</a></div></section>
+<div class="footer">HealthGuard AI · Provider analytics workspace</div></main>
+
+{% if form %}
+<script>
+const labels = [{% for item in form %}"{{ item.names|escapejs }}"{% if not forloop.last %},{% endif %}{% endfor %}];
+const values = [{% for item in form %}{{ item.dcount|default:0 }}{% if not forloop.last %},{% endif %}{% endfor %}];
+const selectedType = "{{ chart_type|default:'bar'|escapejs }}";
+const chartType = selectedType === "pie" ? "pie" : selectedType === "line" ? "line" : "bar";
+
+new Chart(document.getElementById("fraudChart"), {
+  type: chartType,
+  data: {
+    labels: labels,
+    datasets: [{
+      label: "Prediction Ratio",
+      data: values,
+      borderWidth: 2,
+      borderRadius: chartType === "bar" ? 10 : 0,
+      tension: 0.35,
+      fill: chartType === "line",
+      backgroundColor: chartType === "pie"
+        ? ["#28b7ee","#2879ef","#35d0a5","#7c6cf2","#f59e0b","#ef5b7a"]
+        : "rgba(40,183,238,0.85)",
+      borderColor: "#28b7ee",
+      pointBackgroundColor: "#28b7ee",
+      pointRadius: chartType === "line" ? 5 : 0
+    }]
+  },
+  options: {
+    responsive:true,
+    maintainAspectRatio:false,
+    plugins:{
+      legend:{display:chartType === "pie",position:"bottom",labels:{color:"#9bb5ca",padding:20}},
+      tooltip:{callbacks:{label:function(ctx){return " "+ctx.raw.toFixed(1)+"%";}}}
+    },
+    scales: chartType === "pie" ? {} : {
+      x:{ticks:{color:"#7895ad"},grid:{color:"rgba(41,68,91,.35)"}},
+      y:{beginAtZero:true,ticks:{color:"#7895ad",callback:function(v){return v+"%"}},grid:{color:"rgba(41,68,91,.35)"}}
+    }
+  }
+});
+</script>
+{% endif %}
+</body></html>

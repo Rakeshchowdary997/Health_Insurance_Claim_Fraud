@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Remote User Login</title><link rel="stylesheet" href="/static/modern.css"></head>
+<body>
+<div class="auth-shell"><div class="auth-grid">
+<section class="auth-side">
+<a class="brand" href="{% url 'index' %}"><span class="brand-mark">✚</span><span>Health<span style="color:#7dd3fc">Guard</span><small>AI FRAUD INTELLIGENCE</small></span></a>
+<h1>Turn claim data into clearer decisions.</h1>
+<p>Sign in to access your profile and the health insurance claim fraud prediction workflow.</p>
+<div class="feature-list">
+<div class="feature">✓ <b>Claim analysis</b> using the existing ML workflow</div>
+<div class="feature">✓ Secure-looking modern interface</div>
+<div class="feature">✓ Direct access to your profile after login</div>
+</div>
+</section>
+<section class="auth-card">
+<h2>Welcome back</h2><div class="sub">Remote User · Sign in to continue</div>
+<form method="POST" action="{% url 'login' %}">
+{% csrf_token %}
+<div class="form-group"><label>USERNAME</label><input type="text" name="username" placeholder="Enter your username" required></div>
+<div class="form-group"><label>PASSWORD</label><input type="password" name="password" placeholder="Enter your password" required></div>
+<button class="btn btn-primary full" type="submit" name="submit1">Sign in →</button>
+</form>
+<div class="auth-links"><a href="{% url 'Register1' %}">Create an account</a><a href="{% url 'serviceproviderlogin' %}">Service Provider →</a></div>
+</section>
+</div></div>
+</body></html>

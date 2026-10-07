@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Analyze Claim | HealthGuard AI</title>
+<link rel="stylesheet" href="/static/modern.css">
+<style>
+/* Claim page navigation override */
+.site-header{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:24px!important;min-height:62px!important;padding:0 22px!important;border-bottom:1px solid rgba(120,160,200,.12)!important;background:rgba(4,15,27,.96)!important;box-sizing:border-box!important;position:sticky!important;top:0!important;z-index:50!important;}
+.site-header .brand{display:flex!important;align-items:center!important;gap:12px!important;text-decoration:none!important;}
+.site-header .brand-mark{width:44px!important;height:44px!important;display:grid!important;place-items:center!important;border-radius:13px!important;background:linear-gradient(135deg,#247ff0,#29b7e9)!important;color:#fff!important;font-size:27px!important;font-weight:800!important;box-shadow:0 8px 22px rgba(35,138,240,.22)!important;}
+.site-header .brand strong{display:block!important;color:#f3f8ff!important;font-size:17px!important;line-height:1.05!important;}
+.site-header .brand small{display:block!important;color:#7189a3!important;font-size:10px!important;font-weight:800!important;letter-spacing:.04em!important;margin-top:4px!important;}
+.site-header nav{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:7px!important;margin:0!important;padding:0!important;}
+.site-header nav a{display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:10px 15px!important;border-radius:12px!important;color:#91a8c0!important;text-decoration:none!important;font-size:14px!important;font-weight:750!important;white-space:nowrap!important;line-height:1.2!important;transition:.2s ease!important;}
+.site-header nav a:hover{color:#f5f9ff!important;background:#102236!important;}
+.site-header nav a.active{color:#f5f9ff!important;background:#142338!important;}
+.site-header nav a.nav-cta{color:#fff!important;background:linear-gradient(135deg,#287ff0,#28b4e7)!important;box-shadow:0 8px 20px rgba(40,150,235,.18)!important;margin-left:5px!important;}
+.site-header nav a.nav-cta:hover{transform:translateY(-1px)!important;}
+@media(max-width:760px){.site-header{padding:8px 12px!important;min-height:56px!important}.site-header .brand-mark{width:38px!important;height:38px!important}.site-header .brand strong{font-size:15px!important}.site-header .brand small{font-size:8px!important}.site-header nav{gap:2px!important;overflow-x:auto!important}.site-header nav a{padding:9px 9px!important;font-size:12px!important}.site-header nav a.nav-cta{margin-left:1px!important}}
+.claim-shell{max-width:1160px;margin:0 auto;padding:42px 24px 70px}.claim-hero{display:flex;justify-content:space-between;gap:28px;align-items:flex-end;margin-bottom:30px}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border:1px solid rgba(44,181,255,.28);border-radius:999px;color:#52c9ff;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:rgba(20,137,211,.08)}.claim-hero h1{font-size:clamp(40px,6vw,68px);line-height:.98;margin:18px 0 12px;letter-spacing:-.055em}.claim-hero h1 span{color:#55c9ff}.claim-hero p{max-width:720px;color:#8da8c5;line-height:1.7;margin:0}.status-card{min-width:210px;padding:20px;border:1px solid #19314a;border-radius:20px;background:linear-gradient(145deg,#10253a,#091827)}.status-dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#45d6a8;margin-right:8px;box-shadow:0 0 16px rgba(69,214,168,.7)}.status-card strong{display:block;margin-top:8px;font-size:18px}.status-card small{color:#6f8eac}.form-card{border:1px solid #183149;border-radius:24px;background:#071827;padding:30px;box-shadow:0 18px 55px rgba(0,0,0,.18)}.section-head{display:flex;align-items:center;gap:14px;margin-bottom:22px}.section-icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:#0c2b45;color:#58c9ff;font-weight:900}.section-head h2{font-size:20px;margin:0}.section-head p{margin:3px 0 0;color:#6f8da9;font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.field label{display:block;font-size:12px;font-weight:800;letter-spacing:.04em;color:#7895b2;margin:0 0 8px;text-transform:uppercase}.field input,.field select{width:100%;box-sizing:border-box;border:1px solid #1b3650;background:#0b1d2e;color:#eef7ff;border-radius:13px;padding:14px 15px;outline:none;font:inherit;transition:.2s}.field input:focus,.field select:focus{border-color:#2cb5ff;box-shadow:0 0 0 3px rgba(44,181,255,.1)}.field input::placeholder{color:#536f89}.section{padding:28px 0;border-bottom:1px solid #132b41}.section:first-child{padding-top:0}.section:last-of-type{border-bottom:0}.full{grid-column:1/-1}.hint{font-size:12px;color:#58758f;margin-top:7px}.actions{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:26px}.btn-main{border:0;border-radius:13px;padding:15px 24px;background:linear-gradient(135deg,#238af0,#27b6e9);color:white;font-weight:800;font-size:15px;cursor:pointer;box-shadow:0 10px 28px rgba(35,138,240,.22)}.btn-main:hover{transform:translateY(-1px)}.back-link{color:#7fa0bd;text-decoration:none;font-weight:700}.back-link:hover{color:#55c9ff}.result{margin-bottom:25px;padding:20px;border-radius:18px;border:1px solid #21435d;background:#0b2032}.result .label{font-size:11px;color:#7191ad;text-transform:uppercase;font-weight:800;letter-spacing:.08em}.result strong{display:block;margin-top:7px;font-size:24px;color:#5bd0ff}.result.fraud strong{color:#ff9b9b}.result.safe strong{color:#57ddb2}.note{margin-top:18px;color:#66839f;font-size:12px;line-height:1.6}@media(max-width:760px){.claim-shell{padding:25px 16px 50px}.claim-hero{display:block}.status-card{margin-top:24px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.form-card{padding:20px}.actions{align-items:stretch;flex-direction:column-reverse}.btn-main{width:100%}}
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="brand"><div class="brand-mark">+</div><div><strong>HealthGuard</strong><small>AI FRAUD INTELLIGENCE</small></div></div>
+  <nav><a href="{% url 'index' %}">Home</a><a href="{% url 'ViewYourProfile' %}">My Profile</a><a class="active" href="{% url 'Predict_Health_Insurance_Claim_Fraud' %}">Analyze Claim</a><a class="nav-cta" href="{% url 'index' %}">Logout →</a></nav>
+</header>
+
+<main class="claim-shell">
+  <section class="claim-hero">
+    <div>
+      <div class="eyebrow">● AI CLAIM ASSESSMENT</div>
+      <h1>Analyze your insurance <span>claim.</span></h1>
+      <p>Enter the claim and health profile details below. HealthGuard will send the existing claim identifier through the project's fraud-classification workflow and return its prediction.</p>
+    </div>
+    <div class="status-card"><small>Analysis engine</small><strong><span class="status-dot"></span>Ready to analyze</strong><small>Existing Django ML workflow</small></div>
+  </section>
+
+  {% if objs %}
+  <div class="result {% if objs == 'Fraud Detection' %}fraud{% else %}safe{% endif %}">
+    <div class="label">Latest analysis result</div>
+    <strong>{{ objs }}</strong>
+    <div class="note">This result is returned by the existing project prediction workflow. Review the claim details before submitting another analysis.</div>
+  </div>
+  {% endif %}
+
+  <form method="POST" class="form-card">
+    {% csrf_token %}
+    <section class="section">
+      <div class="section-head"><div class="section-icon">01</div><div><h2>Claim identification</h2><p>Basic information used to identify the insurance claim.</p></div></div>
+      <div class="grid">
+        <div class="field"><label for="RID">Claim / Record ID</label><input id="RID" name="RID" type="text" placeholder="e.g. kao3q91w" required><div class="hint">Use a unique claim identifier.</div></div>
+        <div class="field"><label for="Sum_Insured">Sum insured</label><input id="Sum_Insured" name="Sum_Insured" type="text" placeholder="e.g. 5,00,000" required></div>
+        <div class="field"><label for="claim">Claim amount</label><input id="claim" name="claim" type="number" step="0.01" min="0" placeholder="e.g. 5910.9" required></div>
+        <div class="field"><label for="job_title">Job title</label><input id="job_title" name="job_title" type="text" placeholder="e.g. DataScientist" required></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div class="section-icon">02</div><div><h2>Health profile</h2><p>Clinical and demographic information associated with the claim.</p></div></div>
+      <div class="grid">
+        <div class="field"><label for="age">Age</label><input id="age" name="age" type="number" min="0" max="120" placeholder="e.g. 40" required></div>
+        <div class="field"><label for="sex">Sex</label><select id="sex" name="sex" required><option value="">Select sex</option><option>Male</option><option>Female</option></select></div>
+        <div class="field"><label for="weight">Weight</label><input id="weight" name="weight" type="number" step="0.1" min="0" placeholder="e.g. 69" required></div>
+        <div class="field"><label for="bmi">BMI</label><input id="bmi" name="bmi" type="number" step="0.1" min="0" placeholder="e.g. 29.6" required></div>
+        <div class="field"><label for="bloodpressure">Blood pressure</label><input id="bloodpressure" name="bloodpressure" type="number" min="0" placeholder="e.g. 74" required></div>
+        <div class="field"><label for="hereditary_diseases">Hereditary diseases</label><select id="hereditary_diseases" name="hereditary_diseases" required><option value="">Select status</option><option>NoDisease</option><option>Yes</option><option>No</option></select></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><div class="section-icon">03</div><div><h2>Lifestyle &amp; dependents</h2><p>Additional factors stored with the claim record.</p></div></div>
+      <div class="grid">
+        <div class="field"><label for="no_of_dependents">Number of dependents</label><input id="no_of_dependents" name="no_of_dependents" type="number" min="0" placeholder="e.g. 0" required></div>
+        <div class="field"><label for="smoker">Smoker</label><select id="smoker" name="smoker" required><option value="">Select</option><option value="0">No (0)</option><option value="1">Yes (1)</option></select></div>
+        <div class="field"><label for="diabetes">Diabetes</label><select id="diabetes" name="diabetes" required><option value="">Select</option><option value="0">No (0)</option><option value="1">Yes (1)</option></select></div>
+        <div class="field"><label for="regular_ex">Regular exercise</label><select id="regular_ex" name="regular_ex" required><option value="">Select</option><option value="0">No (0)</option><option value="1">Yes (1)</option></select></div>
+        <div class="field full"><label for="city">City</label><input id="city" name="city" type="text" placeholder="e.g. Hyderabad" required></div>
+      </div>
+    </section>
+
+    <div class="actions">
+      <a class="back-link" href="{% url 'index' %}">← Return to HealthGuard home</a>
+      <button class="btn-main" type="submit">Analyze Claim with AI →</button>
+    </div>
+  </form>
+</main>
+</body>
+</html>
